@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login Admin - Database Alumni Hamasy</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #075e54, #128c7e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .login-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+    }
+
+    .logo {
+        width: 75px;
+        height: 75px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: #e7f5f2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 35px;
+    }
+
+    .login-card h1 {
+        text-align: center;
+        color: #075e54;
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .login-card .subtitle {
+        text-align: center;
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #444;
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper input {
+        width: 100%;
+        height: 48px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 0 15px;
+        font-size: 15px;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    .input-wrapper input:focus {
+        border-color: #075e54;
+        box-shadow: 0 0 0 3px rgba(7, 94, 84, 0.1);
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .login-button {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 8px;
+        background: #075e54;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .login-button:hover {
+        background: #064c44;
+    }
+
+    .login-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .message {
+        display: none;
+        margin-bottom: 20px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .message.error {
+        display: block;
+        background: #fdeaea;
+        color: #b42318;
+        border: 1px solid #f5c2c0;
+    }
+
+    .message.success {
+        display: block;
+        background: #e9f8f0;
+        color: #16794c;
+        border: 1px solid #b9e6cd;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        color: #075e54;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+    .login-info {
+        text-align: center;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        color: #999;
+        font-size: 12px;
+    }
+
+    @media (max-width: 500px) {
+        .login-card {
+            padding: 30px 25px;
+        }
+
+        .login-card h1 {
+            font-size: 24px;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+```
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            👤
+        </div>
+
+        <h1>Login Admin</h1>
+
+        <p class="subtitle">
+            Sistem Database Alumni
+        </p>
+
+        <!-- PESAN ERROR / SUKSES -->
+        <div id="message" class="message"></div>
+
+        <!-- FORM LOGIN -->
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label for="username">
+                    Username
+                </label>
+
+                <div class="input-wrapper">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Masukkan username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Masukkan password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="togglePassword"
+                        aria-label="Tampilkan password"
+                    >
+                        👁️
+                    </button>
+
+                </div>
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-button"
+                id="loginButton"
+            >
+                Masuk
+            </button>
+
+        </form>
+
+
+        <a href="index.html" class="back-link">
+            ← Kembali ke halaman utama
+        </a>
+
+
+        <div class="login-info">
+            Database Alumni
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+     * ==========================================
+     * KONFIGURASI LOGIN SEMENTARA
+     * ==========================================
+     *
+     * Nanti bagian ini akan kita pindahkan/
+     * sambungkan dengan sistem API.
+     *
+     * Untuk pengujian awal:
+     *
+     * Username : admin
+     * Password : admin123
+     *
+     */
+
+    const LOGIN_USERNAME = "admin";
+    const LOGIN_PASSWORD = "admin123";
+
+
+    // Ambil elemen HTML
+    const loginForm = document.getElementById("loginForm");
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const loginButton = document.getElementById("loginButton");
+    const messageBox = document.getElementById("message");
+    const togglePassword = document.getElementById("togglePassword");
+
+
+    /*
+     * ==========================================
+     * CEK SESSION
+     * ==========================================
+     *
+     * Jika admin sudah login, langsung
+     * diarahkan ke dashboard.
+     */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const isLoggedIn = sessionStorage.getItem("alumni_logged_in");
+
+        if (isLoggedIn === "true") {
+            window.location.href = "dashboard.html";
+        }
+
+    });
+
+
+    /*
+     * ==========================================
+     * SHOW MESSAGE
+     * ==========================================
+     */
+
+    function showMessage(message, type) {
+
+        messageBox.textContent = message;
+
+        messageBox.className = "message " + type;
+
+    }
+
+
+    /*
+     * ==========================================
+     * HIDE MESSAGE
+     * ==========================================
+     */
+
+    function hideMessage() {
+
+        messageBox.textContent = "";
+
+        messageBox.className = "message";
+
+    }
+
+
+    /*
+     * ==========================================
+     * SHOW / HIDE PASSWORD
+     * ==========================================
+     */
+
+    togglePassword.addEventListener("click", function () {
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+            togglePassword.textContent = "🙈";
+
+        } else {
+
+            passwordInput.type = "password";
+
+            togglePassword.textContent = "👁️";
+
+        }
+
+    });
+
+
+    /*
+     * ==========================================
+     * PROSES LOGIN
+     * ==========================================
+     */
+
+    loginForm.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        hideMessage();
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+
+        if (username === "") {
+
+            showMessage(
+                "Username wajib diisi.",
+                "error"
+            );
+
+            usernameInput.focus();
+
+            return;
+        }
+
+
+        if (password === "") {
+
+            showMessage(
+                "Password wajib diisi.",
+                "error"
+            );
+
+            passwordInput.focus();
+
+            return;
+        }
+
+
+        /*
+         * Disable tombol selama proses login
+         */
+
+        loginButton.disabled = true;
+
+        loginButton.textContent = "Memproses...";
+
+
+        /*
+         * Simulasi proses pengecekan.
+         * Nanti akan diganti API Google Sheets.
+         */
+
+        setTimeout(function () {
+
+            if (
+                username === LOGIN_USERNAME &&
+                password === LOGIN_PASSWORD
+            ) {
+
+                /*
+                 * Simpan session login
+                 */
+
+                sessionStorage.setItem(
+                    "alumni_logged_in",
+                    "true"
+                );
+
+                sessionStorage.setItem(
+                    "alumni_username",
+                    username
+                );
+
+
+                showMessage(
+                    "Login berhasil. Mengarahkan ke dashboard...",
+                    "success"
+                );
+
+
+                /*
+                 * Pindah ke dashboard
+                 */
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                }, 700);
+
+
+            } else {
+
+                showMessage(
+                    "Username atau password salah.",
+                    "error"
+                );
+
+                loginButton.disabled = false;
+
+                loginButton.textContent = "Masuk";
+
+                passwordInput.value = "";
+
+                passwordInput.focus();
+
+            }
+
+        }, 500);
+
+    });
+
+</script>
+```
+
+</body>
+</html>

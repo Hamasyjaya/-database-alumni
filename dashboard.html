@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard - Database Alumni</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            min-height: 100vh;
+        }
+
+
+        /* ==============================
+           SIDEBAR
+        ============================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #075e54;
+            color: white;
+            padding: 25px 15px;
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+
+        .sidebar-header {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+
+        .sidebar-logo {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+
+        .sidebar-header h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.75;
+        }
+
+
+        .menu {
+            list-style: none;
+            margin-top: 25px;
+        }
+
+
+        .menu li {
+            margin-bottom: 7px;
+        }
+
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: rgba(255,255,255,0.85);
+            padding: 13px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 25px;
+            left: 15px;
+            right: 15px;
+        }
+
+
+        .logout-button {
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+
+        .logout-button:hover {
+            background: rgba(255,255,255,0.18);
+        }
+
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+
+        /* ==============================
+           TOPBAR
+        ============================== */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+
+        .page-title h1 {
+            color: #075e54;
+            font-size: 22px;
+            margin-bottom: 3px;
+        }
+
+
+        .page-title p {
+            color: #999;
+            font-size: 12px;
+        }
+
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e7f5f2;
+            color: #075e54;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+
+        .admin-text strong {
+            display: block;
+            font-size: 14px;
+            color: #333;
+        }
+
+
+        .admin-text span {
+            display: block;
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+
+        /* ==============================
+           CONTENT
+        ============================== */
+
+        .content {
+            padding: 30px;
+        }
+
+
+        .welcome {
+            background: linear-gradient(
+                135deg,
+                #075e54,
+                #128c7e
+            );
+            color: white;
+            border-radius: 15px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+        }
+
+
+        .welcome h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+
+        .welcome p {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+
+        /* ==============================
+           STATISTICS
+        ============================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            background: #e7f5f2;
+        }
+
+
+        .stat-info span {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+
+        .stat-info strong {
+            display: block;
+            font-size: 24px;
+            color: #075e54;
+        }
+
+
+        /* ==============================
+           LOADING STATISTIK
+        ============================== */
+
+        .stat-loading {
+            opacity: 0.55;
+        }
+
+
+        /* ==============================
+           GRID CONTENT
+        ============================== */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+        }
+
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .card-header h3 {
+            color: #075e54;
+            font-size: 17px;
+        }
+
+
+        .card-header a {
+            color: #075e54;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+
+        .card-header a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* ==============================
+           QUICK MENU
+        ============================== */
+
+        .quick-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+
+        .quick-button {
+            text-decoration: none;
+            padding: 18px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            color: #333;
+            transition: 0.2s;
+        }
+
+
+        .quick-button:hover {
+            border-color: #075e54;
+            background: #f7fcfb;
+        }
+
+
+        .quick-button .icon {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+
+        .quick-button strong {
+            display: block;
+            color: #075e54;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+
+        .quick-button span {
+            color: #999;
+            font-size: 11px;
+        }
+
+
+        /* ==============================
+           DATA INFO
+        ============================== */
+
+        .data-info {
+            list-style: none;
+        }
+
+
+        .data-info li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+
+        .data-info li:last-child {
+            border-bottom: none;
+        }
+
+
+        .data-info .label {
+            color: #777;
+        }
+
+
+        .data-info .value {
+            color: #075e54;
+            font-weight: bold;
+        }
+
+
+        /* ==============================
+           MOBILE MENU
+        ============================== */
+
+        .mobile-menu {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 25px;
+            cursor: pointer;
+            color: #075e54;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                left: -250px;
+            }
+
+
+            .sidebar.open {
+                left: 0;
+            }
+
+
+            .main {
+                margin-left: 0;
+            }
+
+
+            .mobile-menu {
+                display: block;
+            }
+
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+
+            .content {
+                padding: 20px;
+            }
+
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 550px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+
+            .admin-text {
+                display: none;
+            }
+
+
+            .welcome {
+                padding: 20px;
+            }
+
+
+            .welcome h2 {
+                font-size: 20px;
+            }
+
+
+            .quick-menu {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     SIDEBAR
+=========================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-logo">
+            👥
+        </div>
+
+        <h2>DATABASE ALUMNI</h2>
+
+        <p>Management System</p>
+
+    </div>
+
+
+    <ul class="menu">
+
+        <li>
+
+            <a
+                href="dashboard.html"
+                class="active"
+            >
+
+                <span class="menu-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="data.html">
+
+                <span class="menu-icon">
+                    👥
+                </span>
+
+                <span>
+                    Data Alumni
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="tambah.html">
+
+                <span class="menu-icon">
+                    ➕
+                </span>
+
+                <span>
+                    Tambah Alumni
+                </span>
+
+            </a>
+
+        </li>
+
+
+        <li>
+
+            <a href="pengaturan.html">
+
+                <span class="menu-icon">
+                    ⚙️
+                </span>
+
+                <span>
+                    Pengaturan
+                </span>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            type="button"
+            class="logout-button"
+            id="logoutButton"
+        >
+            🚪 &nbsp; Keluar
+        </button>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ==========================================
+     MAIN
+=========================================== -->
+
+<main class="main">
+
+
+    <!-- ======================================
+         TOPBAR
+    ======================================= -->
+
+    <header class="topbar">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:15px;
+            "
+        >
+
+            <button
+                type="button"
+                class="mobile-menu"
+                id="mobileMenu"
+                aria-label="Menu"
+            >
+                ☰
+            </button>
+
+
+            <div class="page-title">
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Ringkasan database alumni
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-info">
+
+            <div
+                class="admin-avatar"
+                id="adminAvatar"
+            >
+                A
+            </div>
+
+
+            <div class="admin-text">
+
+                <strong id="adminName">
+                    Admin
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ======================================
+         CONTENT
+    ======================================= -->
+
+    <section class="content">
+
+
+        <!-- ==================================
+             WELCOME
+        =================================== -->
+
+        <div class="welcome">
+
+            <h2 id="welcomeText">
+                Selamat Datang, Admin 👋
+            </h2>
+
+            <p>
+                Kelola data alumni dengan mudah
+                melalui dashboard ini.
+            </p>
+
+        </div>
+
+
+
+        <!-- ==================================
+             STATISTICS
+        =================================== -->
+
+        <div class="stats">
+
+
+            <!-- TOTAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Total Alumni
+                    </span>
+
+                    <strong
+                        id="totalAlumni"
+                        class="stat-loading"
+                    >
+                        ...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LAKI-LAKI -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👨
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Laki-laki
+                    </span>
+
+                    <strong
+                        id="totalLaki"
+                        class="stat-loading"
+                    >
+                        ...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PEREMPUAN -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👩
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Perempuan
+                    </span>
+
+                    <strong
+                        id="totalPerempuan"
+                        class="stat-loading"
+                    >
+                        ...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ANGKATAN -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎓
+                </div>
+
+                <div class="stat-info">
+
+                    <span>
+                        Angkatan
+                    </span>
+
+                    <strong
+                        id="totalAngkatan"
+                        class="stat-loading"
+                    >
+                        ...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================
+             DASHBOARD GRID
+        =================================== -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- ==================================
+                 MENU CEPAT
+            =================================== -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Menu Cepat
+                    </h3>
+
+                </div>
+
+
+                <div class="quick-menu">
+
+
+                    <a
+                        href="data.html"
+                        class="quick-button"
+                    >
+
+                        <div class="icon">
+                            📋
+                        </div>
+
+                        <strong>
+                            Data Alumni
+                        </strong>
+
+                        <span>
+                            Lihat seluruh data alumni
+                        </span>
+
+                    </a>
+
+
+
+                    <a
+                        href="tambah.html"
+                        class="quick-button"
+                    >
+
+                        <div class="icon">
+                            ➕
+                        </div>
+
+                        <strong>
+                            Tambah Alumni
+                        </strong>
+
+                        <span>
+                            Tambahkan data alumni baru
+                        </span>
+
+                    </a>
+
+
+
+                    <a
+                        href="data.html"
+                        class="quick-button"
+                    >
+
+                        <div class="icon">
+                            🔍
+                        </div>
+
+                        <strong>
+                            Cari Alumni
+                        </strong>
+
+                        <span>
+                            Cari berdasarkan NIA atau nama
+                        </span>
+
+                    </a>
+
+
+
+                    <a
+                        href="pengaturan.html"
+                        class="quick-button"
+                    >
+
+                        <div class="icon">
+                            ⚙️
+                        </div>
+
+                        <strong>
+                            Pengaturan
+                        </strong>
+
+                        <span>
+                            Pengaturan sistem
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 DATABASE INFORMATION
+            =================================== -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <h3>
+                        Struktur Data
+                    </h3>
+
+                    <a href="data.html">
+                        Lihat data →
+                    </a>
+
+                </div>
+
+
+                <ul class="data-info">
+
+
+                    <li>
+
+                        <span class="label">
+                            NIA
+                        </span>
+
+                        <span class="value">
+                            Nomor Induk Alumni
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="label">
+                            Nama
+                        </span>
+
+                        <span class="value">
+                            Nama Alumni
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="label">
+                            Tempat, Tanggal Lahir
+                        </span>
+
+                        <span class="value">
+                            TTL
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="label">
+                            Alamat
+                        </span>
+
+                        <span class="value">
+                            Alamat
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="label">
+                            Nomor Telepon
+                        </span>
+
+                        <span class="value">
+                            Telepon
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="label">
+                            Jenis Kelamin
+                        </span>
+
+                        <span class="value">
+                            L / P
+                        </span>
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="label">
+                            Angkatan
+                        </span>
+
+                        <span class="value">
+                            Tahun
+                        </span>
+
+                    </li>
+
+
+                </ul>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- ==========================================
+     JAVASCRIPT
+=========================================== -->
+
+<script>
+
+
+    /*
+     * ==========================================
+     * API GOOGLE APPS SCRIPT
+     * ==========================================
+     */
+
+    const API_URL =
+        "https://script.google.com/macros/s/AKfycbzR5ZEbyw2Jnfs8MOa1U_r3NumNkZ3rsSiZJ4UeXSJuNeAEc4OfNwxUxUi2y9RIjiq-/exec";
+
+
+
+    /*
+     * ==========================================
+     * 1. CEK LOGIN
+     * ==========================================
+     */
+
+    const isLoggedIn =
+        sessionStorage.getItem(
+            "alumni_logged_in"
+        );
+
+
+    if (
+        isLoggedIn !== "true"
+    ) {
+
+        window.location.replace(
+            "login.html"
+        );
+
+    }
+
+
+
+    /*
+     * ==========================================
+     * 2. AMBIL USERNAME
+     * ==========================================
+     */
+
+    const savedUsername =
+        sessionStorage.getItem(
+            "alumni_username"
+        );
+
+
+    const adminName =
+        document.getElementById(
+            "adminName"
+        );
+
+
+    const adminAvatar =
+        document.getElementById(
+            "adminAvatar"
+        );
+
+
+    const welcomeText =
+        document.getElementById(
+            "welcomeText"
+        );
+
+
+    if (savedUsername) {
+
+        adminName.textContent =
+            savedUsername;
+
+
+        adminAvatar.textContent =
+            savedUsername
+                .charAt(0)
+                .toUpperCase();
+
+
+        welcomeText.textContent =
+            "Selamat Datang, " +
+            savedUsername +
+            " 👋";
+
+    }
+
+
+
+    /*
+     * ==========================================
+     * 3. ELEMENT STATISTIK
+     * ==========================================
+     */
+
+    const totalAlumni =
+        document.getElementById(
+            "totalAlumni"
+        );
+
+
+    const totalLaki =
+        document.getElementById(
+            "totalLaki"
+        );
+
+
+    const totalPerempuan =
+        document.getElementById(
+            "totalPerempuan"
+        );
+
+
+    const totalAngkatan =
+        document.getElementById(
+            "totalAngkatan"
+        );
+
+
+
+    /*
+     * ==========================================
+     * 4. FUNGSI MENGAMBIL DATA
+     * ==========================================
+     */
+
+    async function loadDashboardStatistics() {
+
+        try {
+
+
+            /*
+             * Tampilkan loading
+             */
+
+            totalAlumni.textContent =
+                "...";
+
+            totalLaki.textContent =
+                "...";
+
+            totalPerempuan.textContent =
+                "...";
+
+            totalAngkatan.textContent =
+                "...";
+
+
+            /*
+             * Request API
+             */
+
+            const response =
+                await fetch(
+                    API_URL,
+                    {
+                        method: "GET",
+                        cache: "no-store"
+                    }
+                );
+
+
+            /*
+             * Periksa HTTP
+             */
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "API gagal diakses. HTTP " +
+                    response.status
+                );
+
+            }
+
+
+            /*
+             * Baca JSON
+             */
+
+            const result =
+                await response.json();
+
+
+            /*
+             * Periksa hasil API
+             */
+
+            if (
+                !result ||
+                result.success !== true
+            ) {
+
+                throw new Error(
+                    result &&
+                    result.message
+                        ? result.message
+                        : "Respons API tidak valid."
+                );
+
+            }
+
+
+            /*
+             * Pastikan data berupa array
+             */
+
+            const data =
+                Array.isArray(
+                    result.data
+                )
+                    ? result.data
+                    : [];
+
+
+
+            /*
+             * ==================================
+             * TOTAL ALUMNI
+             * ==================================
+             */
+
+            const total =
+                data.length;
+
+
+
+            /*
+             * ==================================
+             * HITUNG LAKI-LAKI
+             * ==================================
+             */
+
+            let jumlahLaki = 0;
+
+
+            data.forEach(
+                function (alumni) {
+
+                    const jenisKelamin =
+                        String(
+                            alumni.jenisKelamin || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    if (
+                        jenisKelamin === "laki-laki" ||
+                        jenisKelamin === "laki laki" ||
+                        jenisKelamin === "laki" ||
+                        jenisKelamin === "l"
+                    ) {
+
+                        jumlahLaki++;
+
+                    }
+
+                }
+            );
+
+
+
+            /*
+             * ==================================
+             * HITUNG PEREMPUAN
+             * ==================================
+             */
+
+            let jumlahPerempuan = 0;
+
+
+            data.forEach(
+                function (alumni) {
+
+                    const jenisKelamin =
+                        String(
+                            alumni.jenisKelamin || ""
+                        )
+                        .trim()
+                        .toLowerCase();
+
+
+                    if (
+                        jenisKelamin === "perempuan" ||
+                        jenisKelamin === "wanita" ||
+                        jenisKelamin === "p"
+                    ) {
+
+                        jumlahPerempuan++;
+
+                    }
+
+                }
+            );
+
+
+
+            /*
+             * ==================================
+             * HITUNG ANGKATAN UNIK
+             * ==================================
+             */
+
+            const daftarAngkatan =
+                new Set();
+
+
+            data.forEach(
+                function (alumni) {
+
+                    const angkatan =
+                        String(
+                            alumni.angkatan || ""
+                        )
+                        .trim();
+
+
+                    if (angkatan) {
+
+                        daftarAngkatan.add(
+                            angkatan
+                        );
+
+                    }
+
+                }
+            );
+
+
+            const jumlahAngkatan =
+                daftarAngkatan.size;
+
+
+
+            /*
+             * ==================================
+             * TAMPILKAN STATISTIK
+             * ==================================
+             */
+
+            totalAlumni.textContent =
+                total;
+
+
+            totalLaki.textContent =
+                jumlahLaki;
+
+
+            totalPerempuan.textContent =
+                jumlahPerempuan;
+
+
+            totalAngkatan.textContent =
+                jumlahAngkatan;
+
+
+            /*
+             * Hapus efek loading
+             */
+
+            totalAlumni.classList.remove(
+                "stat-loading"
+            );
+
+
+            totalLaki.classList.remove(
+                "stat-loading"
+            );
+
+
+            totalPerempuan.classList.remove(
+                "stat-loading"
+            );
+
+
+            totalAngkatan.classList.remove(
+                "stat-loading"
+            );
+
+
+        } catch (error) {
+
+
+            /*
+             * Tampilkan error di console
+             */
+
+            console.error(
+                "Dashboard API Error:",
+                error
+            );
+
+
+            /*
+             * Jika gagal,
+             * tampilkan tanda -
+             * agar tidak dianggap
+             * sebagai data sebenarnya.
+             */
+
+            totalAlumni.textContent =
+                "-";
+
+
+            totalLaki.textContent =
+                "-";
+
+
+            totalPerempuan.textContent =
+                "-";
+
+
+            totalAngkatan.textContent =
+                "-";
+
+
+            totalAlumni.classList.remove(
+                "stat-loading"
+            );
+
+
+            totalLaki.classList.remove(
+                "stat-loading"
+            );
+
+
+            totalPerempuan.classList.remove(
+                "stat-loading"
+            );
+
+
+            totalAngkatan.classList.remove(
+                "stat-loading"
+            );
+
+        }
+
+    }
+
+
+
+    /*
+     * ==========================================
+     * 5. JALANKAN STATISTIK
+     * ==========================================
+     */
+
+    loadDashboardStatistics();
+
+
+
+    /*
+     * ==========================================
+     * 6. LOGOUT
+     * ==========================================
+     */
+
+    const logoutButton =
+        document.getElementById(
+            "logoutButton"
+        );
+
+
+    logoutButton.addEventListener(
+        "click",
+        function () {
+
+
+            const confirmLogout =
+                confirm(
+                    "Apakah Anda yakin ingin keluar?"
+                );
+
+
+            if (!confirmLogout) {
+
+                return;
+
+            }
+
+
+            /*
+             * Hapus session
+             */
+
+            sessionStorage.removeItem(
+                "alumni_logged_in"
+            );
+
+
+            sessionStorage.removeItem(
+                "alumni_username"
+            );
+
+
+            /*
+             * Kembali ke login
+             */
+
+            window.location.replace(
+                "login.html"
+            );
+
+        }
+    );
+
+
+
+    /*
+     * ==========================================
+     * 7. MOBILE SIDEBAR
+     * ==========================================
+     */
+
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    mobileMenu.addEventListener(
+        "click",
+        function () {
+
+            sidebar.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+
+    /*
+     * ==========================================
+     * 8. TUTUP SIDEBAR MOBILE
+     * ==========================================
+     */
+
+    const menuLinks =
+        document.querySelectorAll(
+            ".menu a"
+        );
+
+
+    menuLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    if (
+                        window.innerWidth <= 800
+                    ) {
+
+                        sidebar.classList.remove(
+                            "open"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /*
+     * ==========================================
+     * 9. PROTEKSI TAMBAHAN
+     * ==========================================
+     */
+
+    window.addEventListener(
+        "pageshow",
+        function () {
+
+
+            const currentLogin =
+                sessionStorage.getItem(
+                    "alumni_logged_in"
+                );
+
+
+            if (
+                currentLogin !== "true"
+            ) {
+
+                window.location.replace(
+                    "login.html"
+                );
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

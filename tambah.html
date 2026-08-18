@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tambah Data Alumni</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #198754;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #198754;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 7px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background: #198754;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #157347;
+        }
+
+        .btn-save:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 20px;
+            padding: 13px;
+            border-radius: 7px;
+        }
+
+        .message.success {
+            display: block;
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .message.error {
+            display: block;
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .loading {
+            display: none;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 700px) {
+
+            .container {
+                margin: 15px auto;
+                padding: 10px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Tambah Data Alumni</h1>
+
+        <div class="subtitle">
+            Silakan lengkapi data alumni dengan benar.
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <form id="alumniForm">
+
+            <div class="form-grid">
+
+                <!-- NIA -->
+                <div class="form-group">
+                    <label for="nia">
+                        NIA *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nia"
+                        name="nia"
+                        placeholder="Masukkan NIA"
+                        required
+                    >
+                </div>
+
+
+                <!-- NAMA -->
+                <div class="form-group">
+                    <label for="nama">
+                        Nama Lengkap *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nama"
+                        name="nama"
+                        placeholder="Masukkan nama lengkap"
+                        required
+                    >
+                </div>
+
+
+                <!-- TEMPAT LAHIR -->
+                <div class="form-group">
+                    <label for="tempatLahir">
+                        Tempat Lahir
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tempatLahir"
+                        name="tempatLahir"
+                        placeholder="Contoh: Mojokerto"
+                    >
+                </div>
+
+
+                <!-- TANGGAL LAHIR -->
+                <div class="form-group">
+                    <label for="tanggalLahir">
+                        Tanggal Lahir
+                    </label>
+
+                    <input
+                        type="date"
+                        id="tanggalLahir"
+                        name="tanggalLahir"
+                    >
+                </div>
+
+
+                <!-- ALAMAT -->
+                <div class="form-group full">
+                    <label for="alamat">
+                        Alamat
+                    </label>
+
+                    <textarea
+                        id="alamat"
+                        name="alamat"
+                        placeholder="Masukkan alamat lengkap"
+                    ></textarea>
+                </div>
+
+
+                <!-- TELEPON -->
+                <div class="form-group">
+                    <label for="telepon">
+                        Nomor Telepon
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="telepon"
+                        name="telepon"
+                        placeholder="Contoh: 081234567890"
+                    >
+                </div>
+
+
+                <!-- JENIS KELAMIN -->
+                <div class="form-group">
+                    <label for="jenisKelamin">
+                        Jenis Kelamin
+                    </label>
+
+                    <select
+                        id="jenisKelamin"
+                        name="jenisKelamin"
+                    >
+
+                        <option value="">
+                            -- Pilih Jenis Kelamin --
+                        </option>
+
+                        <option value="LAKI-LAKI">
+                            LAKI-LAKI
+                        </option>
+
+                        <option value="PEREMPUAN">
+                            PEREMPUAN
+                        </option>
+
+                    </select>
+                </div>
+
+
+                <!-- ANGKATAN -->
+                <div class="form-group">
+                    <label for="angkatan">
+                        Angkatan
+                    </label>
+
+                    <input
+                        type="text"
+                        id="angkatan"
+                        name="angkatan"
+                        placeholder="Contoh: 2020"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="btn-save"
+                    id="btnSave"
+                >
+                    Simpan Data
+
+                    <span
+                        id="loading"
+                        class="loading"
+                    >
+                        ⏳ Menyimpan...
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn-back"
+                    onclick="kembali()"
+                >
+                    Kembali
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   URL API GOOGLE APPS SCRIPT
+===================================================== */
+
+/*
+   GANTI URL DI BAWAH DENGAN URL WEB APP /exec KAMU.
+*/
+
+const API_URL =
+    "https://script.google.com/macros/s/AKfycbzR5ZEbyw2Jnfs8MOa1U_r3NumNkZ3rsSiZJ4UeXSJuNeAEc4OfNwxUxUi2y9RIjiq-/exec";
+
+
+/* =====================================================
+   ELEMENT
+===================================================== */
+
+const form =
+    document.getElementById("alumniForm");
+
+const message =
+    document.getElementById("message");
+
+const btnSave =
+    document.getElementById("btnSave");
+
+const loading =
+    document.getElementById("loading");
+
+
+/* =====================================================
+   PESAN
+===================================================== */
+
+function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+function hideMessage() {
+
+    message.textContent = "";
+
+    message.className =
+        "message";
+
+}
+
+
+/* =====================================================
+   SUBMIT FORM
+===================================================== */
+
+form.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        hideMessage();
+
+
+        /* CEK URL API */
+
+        if (
+            !API_URL ||
+            API_URL.includes(
+                "MASUKKAN_URL"
+            )
+        ) {
+
+            showMessage(
+                "URL API belum diisi di tambah.html.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /* AMBIL DATA */
+
+        const data = {
+
+            action: "add",
+
+            nia:
+                document
+                    .getElementById("nia")
+                    .value
+                    .trim(),
+
+            nama:
+                document
+                    .getElementById("nama")
+                    .value
+                    .trim(),
+
+            tempatLahir:
+                document
+                    .getElementById("tempatLahir")
+                    .value
+                    .trim(),
+
+            tanggalLahir:
+                document
+                    .getElementById("tanggalLahir")
+                    .value,
+
+            alamat:
+                document
+                    .getElementById("alamat")
+                    .value
+                    .trim(),
+
+            telepon:
+                document
+                    .getElementById("telepon")
+                    .value
+                    .trim(),
+
+            jenisKelamin:
+                document
+                    .getElementById("jenisKelamin")
+                    .value,
+
+            angkatan:
+                document
+                    .getElementById("angkatan")
+                    .value
+                    .trim()
+
+        };
+
+
+        /* VALIDASI */
+
+        if (!data.nia) {
+
+            showMessage(
+                "NIA wajib diisi.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!data.nama) {
+
+            showMessage(
+                "Nama wajib diisi.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /* MODE LOADING */
+
+        btnSave.disabled = true;
+
+        loading.style.display =
+            "inline";
+
+
+        try {
+
+            /*
+             * Gunakan no-cors karena halaman HTML statis
+             * tidak dapat membaca response JSON langsung
+             * dari Google Apps Script.
+             *
+             * Data tetap dikirim melalui POST ke API.gs.
+             */
+
+            await fetch(
+                API_URL,
+                {
+                    method: "POST",
+
+                    mode: "no-cors",
+
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+
+                    body:
+                        JSON.stringify(data)
+                }
+            );
+
+
+            /*
+             * Dengan no-cors browser tidak dapat membaca
+             * response API. Karena itu kita menampilkan
+             * pesan bahwa data sudah dikirim.
+             */
+
+            showMessage(
+                "Data berhasil dikirim. Silakan cek Google Spreadsheet.",
+                "success"
+            );
+
+
+            form.reset();
+
+
+        } catch (error) {
+
+            console.error(
+                "Error:",
+                error
+            );
+
+
+            showMessage(
+                "Gagal mengirim data ke Google Spreadsheet. Periksa URL API dan deployment.",
+                "error"
+            );
+
+
+        } finally {
+
+            btnSave.disabled =
+                false;
+
+            loading.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   KEMBALI
+===================================================== */
+
+function kembali() {
+
+    window.history.back();
+
+}
+
+</script>
+
+</body>
+</html>

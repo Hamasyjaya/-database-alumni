@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Data Alumni</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+
+        .header h1 {
+            margin: 0;
+            color: #198754;
+            font-size: 28px;
+        }
+
+
+        .header p {
+            margin: 5px 0 0;
+            color: #777;
+        }
+
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .excel-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .btn-excel { background: #0d6efd; color: white; }
+        .btn-import { background: #fd7e14; color: white; }
+        .btn-template { background: #20c997; color: white; }
+
+
+        button {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        .btn-primary {
+            background: #198754;
+            color: white;
+        }
+
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+
+        .btn-edit {
+            background: #ffc107;
+            color: #212529;
+        }
+
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.08);
+        }
+
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .stat {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        .stat-title {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #198754;
+        }
+
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+
+        .search-box input:focus {
+            border-color: #198754;
+        }
+
+
+        .message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+        }
+
+
+        .message.success {
+            display: block;
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+
+        .message.error {
+            display: block;
+            background: #f8d7da;
+            color: #842029;
+        }
+
+
+        .message.info {
+            display: block;
+            background: #cff4fc;
+            color: #055160;
+        }
+
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1100px;
+        }
+
+
+        thead {
+            background: #198754;
+            color: white;
+        }
+
+
+        th {
+            padding: 13px 10px;
+            text-align: left;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+
+        .action-buttons button {
+            padding: 7px 10px;
+            font-size: 12px;
+        }
+
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid #eee;
+            border-top: 4px solid #198754;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+
+        @keyframes spin {
+
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #777;
+        }
+
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+
+        /* =====================================================
+           MODAL EDIT
+        ===================================================== */
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            margin: 30px auto;
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+        }
+
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+
+        .modal-header h2 {
+            margin: 0;
+            color: #198754;
+        }
+
+
+        .close {
+            font-size: 28px;
+            cursor: pointer;
+            color: #777;
+            line-height: 1;
+        }
+
+
+        .close:hover {
+            color: #333;
+        }
+
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+
+        label {
+            margin-bottom: 6px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #198754;
+        }
+
+
+        input[readonly] {
+            background: #f1f3f5;
+            cursor: not-allowed;
+        }
+
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+
+        @media (max-width: 800px) {
+
+            .container {
+                margin: 10px auto;
+                padding: 10px;
+            }
+
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+
+            .modal-content {
+                margin: 10px auto;
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Data Alumni
+            </h1>
+
+            <p>
+                Data alumni yang tersimpan
+                di Google Spreadsheet
+            </p>
+
+        </div>
+
+
+        <div class="button-group">
+
+            <a
+                href="tambah.html"
+                class="btn-primary"
+                style="
+                    display:inline-block;
+                    text-decoration:none;
+                    padding:11px 18px;
+                    border-radius:7px;
+                    font-size:14px;
+                "
+            >
+                + Tambah Data
+            </a>
+
+
+            <button
+                type="button"
+                class="btn-secondary"
+                onclick="loadData()"
+            >
+                🔄 Refresh
+            </button>
+
+            <button type="button" class="btn-excel" onclick="exportExcel()">📥 Export Excel</button>
+            <button type="button" class="btn-template" onclick="downloadTemplate()">📄 Template Excel</button>
+            <button type="button" class="btn-import" onclick="document.getElementById('excelFile').click()">📤 Import Excel</button>
+            <input type="file" id="excelFile" accept=".xlsx,.xls" style="display:none" onchange="handleExcelImport(event)">
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATISTIK
+    ====================================================== -->
+
+    <div class="stats">
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Total Alumni
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalAlumni"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Hasil Pencarian
+            </div>
+
+            <div
+                class="stat-number"
+                id="hasilPencarian"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Status Database
+            </div>
+
+            <div
+                class="stat-number"
+                id="statusDatabase"
+                style="font-size:18px;"
+            >
+                Memuat...
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         DATA
+    ====================================================== -->
+
+    <div class="card">
+
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <div class="toolbar">
+
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="🔎 Cari NIA, nama, alamat, angkatan..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <button
+                type="button"
+                class="btn-secondary"
+                onclick="clearSearch()"
+            >
+                Reset Pencarian
+            </button>
+
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+
+                        <th>NIA</th>
+
+                        <th>Nama</th>
+
+                        <th>Tempat Lahir</th>
+
+                        <th>Tanggal Lahir</th>
+
+                        <th>Alamat</th>
+
+                        <th>Nomor Telepon</th>
+
+                        <th>Jenis Kelamin</th>
+
+                        <th>Angkatan</th>
+
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="dataTable">
+
+                    <tr>
+
+                        <td
+                            colspan="10"
+                            class="loading"
+                        >
+
+                            <div
+                                class="spinner"
+                            ></div>
+
+                            Memuat data...
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     MODAL EDIT
+========================================================= -->
+
+<div
+    id="editModal"
+    class="modal"
+>
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Edit Data Alumni
+            </h2>
+
+
+            <span
+                class="close"
+                onclick="closeEditModal()"
+                title="Tutup"
+            >
+                &times;
+            </span>
+
+        </div>
+
+
+        <div
+            id="editMessage"
+            class="message"
+        ></div>
+
+
+        <form id="editForm">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="editNia">
+                        NIA
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editNia"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editNama">
+                        Nama
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editNama"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editTempatLahir">
+                        Tempat Lahir
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editTempatLahir"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editTanggalLahir">
+                        Tanggal Lahir
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editTanggalLahir"
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="editAlamat">
+                        Alamat
+                    </label>
+
+                    <textarea
+                        id="editAlamat"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editTelepon">
+                        Nomor Telepon
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editTelepon"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editJenisKelamin">
+                        Jenis Kelamin
+                    </label>
+
+                    <select
+                        id="editJenisKelamin"
+                    >
+
+                        <option value="">
+                            -- Pilih --
+                        </option>
+
+                        <option value="LAKI-LAKI">
+                            LAKI-LAKI
+                        </option>
+
+                        <option value="PEREMPUAN">
+                            PEREMPUAN
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="editAngkatan">
+                        Angkatan
+                    </label>
+
+                    <input
+                        type="text"
+                        id="editAngkatan"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="modal-buttons">
+
+
+                <button
+                    type="button"
+                    class="btn-secondary"
+                    onclick="closeEditModal()"
+                >
+                    Batal
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    id="btnEditSave"
+                >
+                    Simpan Perubahan
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* ============================================================
+   URL API
+============================================================ */
+
+const API_URL =
+    "https://script.google.com/macros/s/AKfycbzR5ZEbyw2Jnfs8MOa1U_r3NumNkZ3rsSiZJ4UeXSJuNeAEc4OfNwxUxUi2y9RIjiq-/exec";
+
+
+/* ============================================================
+   DATA GLOBAL
+============================================================ */
+
+let alumniData = [];
+
+let filteredData = [];
+
+
+/* ============================================================
+   ELEMENT
+============================================================ */
+
+const dataTable =
+    document.getElementById(
+        "dataTable"
+    );
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+const totalAlumni =
+    document.getElementById(
+        "totalAlumni"
+    );
+
+const hasilPencarian =
+    document.getElementById(
+        "hasilPencarian"
+    );
+
+const statusDatabase =
+    document.getElementById(
+        "statusDatabase"
+    );
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+
+/* ============================================================
+   LOAD DATA
+============================================================ */
+
+async function loadData() {
+
+    dataTable.innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="10"
+                class="loading"
+            >
+
+                <div class="spinner"></div>
+
+                Mengambil data...
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "?t=" +
+                Date.now()
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP Error " +
+                response.status
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        if (!result.success) {
+
+            throw new Error(
+                result.message ||
+                "Gagal mengambil data."
+            );
+
+        }
+
+
+        alumniData =
+            Array.isArray(result.data)
+                ? result.data
+                : [];
+
+
+        filteredData =
+            [...alumniData];
+
+
+        totalAlumni.textContent =
+            alumniData.length;
+
+
+        hasilPencarian.textContent =
+            alumniData.length;
+
+
+        statusDatabase.textContent =
+            "Terhubung";
+
+
+        statusDatabase.style.color =
+            "#198754";
+
+
+        renderTable(
+            filteredData
+        );
+
+
+        hideMessage();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        statusDatabase.textContent =
+            "Gagal";
+
+
+        statusDatabase.style.color =
+            "#dc3545";
+
+
+        dataTable.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="10"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        ⚠️
+                    </div>
+
+                    <strong>
+                        Gagal mengambil data
+                    </strong>
+
+                    <br><br>
+
+                    ${escapeHtml(
+                        error.message
+                    )}
+
+                    <br><br>
+
+                    <button
+                        type="button"
+                        class="btn-primary"
+                        onclick="loadData()"
+                    >
+                        Coba Lagi
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        showMessage(
+            "Gagal mengambil data dari API.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   TAMPILKAN TABEL
+============================================================ */
+
+function renderTable(data) {
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        dataTable.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="10"
+                    class="empty"
+                >
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    Belum ada data alumni.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    data.forEach(
+        function(alumni) {
+
+            /*
+             * NIA digunakan sebagai identitas.
+             * Ini lebih aman daripada menggunakan
+             * index ketika pencarian sedang aktif.
+             */
+
+            const niaEncoded =
+                encodeURIComponent(
+                    String(
+                        alumni.nia || ""
+                    )
+                );
+
+
+            html += `
+
+                <tr>
+
+                    <td>
+                        ${getNomorUrut(alumni.nia)}
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+                            ${escapeHtml(
+                                alumni.nia
+                            )}
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.nama
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.tempatLahir
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.tanggalLahir
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.alamat
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.telepon
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.jenisKelamin
+                        )}
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(
+                            alumni.angkatan
+                        )}
+                    </td>
+
+
+                    <td>
+
+                        <div
+                            class="action-buttons"
+                        >
+
+                            <button
+                                type="button"
+                                class="btn-edit"
+                                onclick="editDataByNia(decodeURIComponent('${niaEncoded}'))"
+                            >
+                                Edit
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="btn-danger"
+                                onclick="hapusDataByNia(decodeURIComponent('${niaEncoded}'))"
+                            >
+                                Hapus
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    dataTable.innerHTML =
+        html;
+
+}
+
+
+/* ============================================================
+   NOMOR URUT
+============================================================ */
+
+function getNomorUrut(nia) {
+
+    const index =
+        alumniData.findIndex(
+            function(item) {
+
+                return String(
+                    item.nia || ""
+                )
+                .trim()
+                .toLowerCase()
+                ===
+                String(
+                    nia || ""
+                )
+                .trim()
+                .toLowerCase();
+
+            }
+        );
+
+
+    return index >= 0
+        ? index + 1
+        : "";
+
+}
+
+
+/* ============================================================
+   PENCARIAN
+============================================================ */
+
+searchInput.addEventListener(
+    "input",
+    function() {
+
+        const keyword =
+            this.value
+                .toLowerCase()
+                .trim();
+
+
+        if (!keyword) {
+
+            filteredData =
+                [...alumniData];
+
+        } else {
+
+            filteredData =
+                alumniData.filter(
+                    function(alumni) {
+
+                        return (
+
+                            String(
+                                alumni.nia || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.nama || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.tempatLahir || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.tanggalLahir || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.alamat || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.telepon || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.jenisKelamin || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                            ||
+
+                            String(
+                                alumni.angkatan || ""
+                            )
+                            .toLowerCase()
+                            .includes(keyword)
+
+                        );
+
+                    }
+                );
+
+        }
+
+
+        hasilPencarian.textContent =
+            filteredData.length;
+
+
+        renderTable(
+            filteredData
+        );
+
+    }
+);
+
+
+/* ============================================================
+   RESET PENCARIAN
+============================================================ */
+
+function clearSearch() {
+
+    searchInput.value =
+        "";
+
+
+    filteredData =
+        [...alumniData];
+
+
+    hasilPencarian.textContent =
+        filteredData.length;
+
+
+    renderTable(
+        filteredData
+    );
+
+}
+
+
+/* ============================================================
+   CARI ALUMNI BERDASARKAN NIA
+============================================================ */
+
+function cariAlumniByNia(nia) {
+
+    const target =
+        String(
+            nia || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    return alumniData.find(
+        function(alumni) {
+
+            return String(
+                alumni.nia || ""
+            )
+            .trim()
+            .toLowerCase()
+            === target;
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   EDIT DATA
+============================================================ */
+
+function editDataByNia(nia) {
+
+    const alumni =
+        cariAlumniByNia(nia);
+
+
+    if (!alumni) {
+
+        showMessage(
+            "Data alumni tidak ditemukan.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "editNia"
+    ).value =
+        alumni.nia || "";
+
+
+    document.getElementById(
+        "editNama"
+    ).value =
+        alumni.nama || "";
+
+
+    document.getElementById(
+        "editTempatLahir"
+    ).value =
+        alumni.tempatLahir || "";
+
+
+    document.getElementById(
+        "editTanggalLahir"
+    ).value =
+        alumni.tanggalLahir || "";
+
+
+    document.getElementById(
+        "editAlamat"
+    ).value =
+        alumni.alamat || "";
+
+
+    document.getElementById(
+        "editTelepon"
+    ).value =
+        alumni.telepon || "";
+
+
+    document.getElementById(
+        "editJenisKelamin"
+    ).value =
+        alumni.jenisKelamin || "";
+
+
+    document.getElementById(
+        "editAngkatan"
+    ).value =
+        alumni.angkatan || "";
+
+
+    const editMessage =
+        document.getElementById(
+            "editMessage"
+        );
+
+
+    editMessage.className =
+        "message";
+
+
+    editMessage.textContent =
+        "";
+
+
+    document.getElementById(
+        "editModal"
+    ).style.display =
+        "block";
+
+}
+
+
+/* ============================================================
+   TUTUP MODAL
+============================================================ */
+
+function closeEditModal() {
+
+    document.getElementById(
+        "editModal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ============================================================
+   KIRIM DATA POST KE API
+============================================================ */
+
+function postToApi(data) {
+
+    return new Promise(
+        function(resolve, reject) {
+
+            const iframeName =
+                "apiFrame_" +
+                Date.now() +
+                "_" +
+                Math.random()
+                    .toString(36)
+                    .substring(2);
+
+
+            const iframe =
+                document.createElement(
+                    "iframe"
+                );
+
+
+            iframe.name =
+                iframeName;
+
+
+            iframe.style.display =
+                "none";
+
+
+            document.body.appendChild(
+                iframe
+            );
+
+
+            const form =
+                document.createElement(
+                    "form"
+                );
+
+
+            form.method =
+                "POST";
+
+
+            form.action =
+                API_URL;
+
+
+            form.target =
+                iframeName;
+
+
+            form.style.display =
+                "none";
+
+
+            const input =
+                document.createElement(
+                    "input"
+                );
+
+
+            input.type =
+                "hidden";
+
+
+            input.name =
+                "payload";
+
+
+            input.value =
+                JSON.stringify(data);
+
+
+            form.appendChild(
+                input
+            );
+
+
+            document.body.appendChild(
+                form
+            );
+
+
+            let selesai =
+                false;
+
+
+            const timer =
+                setTimeout(
+                    function() {
+
+                        if (selesai) {
+                            return;
+                        }
+
+
+                        selesai = true;
+
+
+                        cleanup();
+
+
+                        resolve({
+                            success: true
+                        });
+
+
+                    },
+                    5000
+                );
+
+
+            function cleanup() {
+
+                setTimeout(
+                    function() {
+
+                        if (
+                            form.parentNode
+                        ) {
+
+                            form.parentNode
+                                .removeChild(
+                                    form
+                                );
+
+                        }
+
+
+                        if (
+                            iframe.parentNode
+                        ) {
+
+                            iframe.parentNode
+                                .removeChild(
+                                    iframe
+                                );
+
+                        }
+
+                    },
+                    100
+                );
+
+            }
+
+
+            try {
+
+                form.submit();
+
+            } catch (error) {
+
+                selesai = true;
+
+                clearTimeout(
+                    timer
+                );
+
+                cleanup();
+
+                reject(error);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   TUNGGU DATA BERUBAH
+============================================================ */
+
+async function tungguUpdate(
+    nia,
+    dataBaru
+) {
+
+    const targetNia =
+        String(
+            nia || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    for (
+        let percobaan = 0;
+        percobaan < 8;
+        percobaan++
+    ) {
+
+        await delay(1000);
+
+
+        await loadData();
+
+
+        const updated =
+            alumniData.find(
+                function(item) {
+
+                    return String(
+                        item.nia || ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    === targetNia;
+
+                }
+            );
+
+
+        if (!updated) {
+
+            continue;
+
+        }
+
+
+        const cocok =
+
+            String(
+                updated.nama || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.nama || ""
+            ).trim()
+
+            &&
+
+            String(
+                updated.tempatLahir || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.tempatLahir || ""
+            ).trim()
+
+            &&
+
+            String(
+                updated.tanggalLahir || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.tanggalLahir || ""
+            ).trim()
+
+            &&
+
+            String(
+                updated.alamat || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.alamat || ""
+            ).trim()
+
+            &&
+
+            String(
+                updated.telepon || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.telepon || ""
+            ).trim()
+
+            &&
+
+            String(
+                updated.jenisKelamin || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.jenisKelamin || ""
+            ).trim()
+
+            &&
+
+            String(
+                updated.angkatan || ""
+            ).trim()
+            ===
+            String(
+                dataBaru.angkatan || ""
+            ).trim();
+
+
+        if (cocok) {
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* ============================================================
+   TUNGGU DATA TERHAPUS
+============================================================ */
+
+async function tungguDelete(
+    nia
+) {
+
+    const targetNia =
+        String(
+            nia || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    for (
+        let percobaan = 0;
+        percobaan < 8;
+        percobaan++
+    ) {
+
+        await delay(1000);
+
+
+        await loadData();
+
+
+        const masihAda =
+            alumniData.some(
+                function(item) {
+
+                    return String(
+                        item.nia || ""
+                    )
+                    .trim()
+                    .toLowerCase()
+                    === targetNia;
+
+                }
+            );
+
+
+        if (!masihAda) {
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
+
+}
+
+
+/* ============================================================
+   SIMPAN EDIT
+============================================================ */
+
+document.getElementById(
+    "editForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const button =
+            document.getElementById(
+                "btnEditSave"
+            );
+
+
+        const editMessage =
+            document.getElementById(
+                "editMessage"
+            );
+
+
+        const data = {
+
+            action:
+                "update",
+
+            nia:
+                document.getElementById(
+                    "editNia"
+                ).value.trim(),
+
+            nama:
+                document.getElementById(
+                    "editNama"
+                ).value.trim(),
+
+            tempatLahir:
+                document.getElementById(
+                    "editTempatLahir"
+                ).value.trim(),
+
+            tanggalLahir:
+                document.getElementById(
+                    "editTanggalLahir"
+                ).value.trim(),
+
+            alamat:
+                document.getElementById(
+                    "editAlamat"
+                ).value.trim(),
+
+            telepon:
+                document.getElementById(
+                    "editTelepon"
+                ).value.trim(),
+
+            jenisKelamin:
+                document.getElementById(
+                    "editJenisKelamin"
+                ).value,
+
+            angkatan:
+                document.getElementById(
+                    "editAngkatan"
+                ).value.trim()
+
+        };
+
+
+        if (!data.nia) {
+
+            editMessage.textContent =
+                "NIA tidak ditemukan.";
+
+
+            editMessage.className =
+                "message error";
+
+
+            return;
+
+        }
+
+
+        if (!data.nama) {
+
+            editMessage.textContent =
+                "Nama wajib diisi.";
+
+
+            editMessage.className =
+                "message error";
+
+
+            return;
+
+        }
+
+
+        button.disabled =
+            true;
+
+
+        button.textContent =
+            "Menyimpan...";
+
+
+        editMessage.textContent =
+            "Mengirim perubahan...";
+
+
+        editMessage.className =
+            "message info";
+
+
+        try {
+
+            await postToApi(
+                data
+            );
+
+
+            const berhasil =
+                await tungguUpdate(
+                    data.nia,
+                    data
+                );
+
+
+            if (berhasil) {
+
+                closeEditModal();
+
+
+                showMessage(
+                    "Data alumni berhasil diperbarui.",
+                    "success"
+                );
+
+
+            } else {
+
+                editMessage.textContent =
+                    "Data belum berubah setelah menunggu API. Periksa Spreadsheet dan pastikan deployment API terbaru sudah aktif.";
+
+
+                editMessage.className =
+                    "message error";
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            editMessage.textContent =
+                error.message ||
+                "Gagal mengubah data.";
+
+
+            editMessage.className =
+                "message error";
+
+        } finally {
+
+            button.disabled =
+                false;
+
+
+            button.textContent =
+                "Simpan Perubahan";
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   HAPUS DATA BERDASARKAN NIA
+============================================================ */
+
+async function hapusDataByNia(
+    nia
+) {
+
+    const alumni =
+        cariAlumniByNia(nia);
+
+
+    if (!alumni) {
+
+        showMessage(
+            "Data alumni tidak ditemukan.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const yakin =
+        confirm(
+
+            "Yakin ingin menghapus data berikut?\n\n" +
+
+            "NIA: " +
+            alumni.nia +
+
+            "\nNama: " +
+            alumni.nama +
+
+            "\n\nData yang sudah dihapus tidak dapat dikembalikan."
+
+        );
+
+
+    if (!yakin) {
+
+        return;
+
+    }
+
+
+    showMessage(
+        "Sedang menghapus data...",
+        "info"
+    );
+
+
+    try {
+
+        await postToApi({
+
+            action:
+                "delete",
+
+            nia:
+                alumni.nia
+
+        });
+
+
+        const berhasil =
+            await tungguDelete(
+                alumni.nia
+            );
+
+
+        if (!berhasil) {
+
+            showMessage(
+                "Data belum terhapus setelah menunggu API. Periksa Spreadsheet dan pastikan deployment API terbaru sudah aktif.",
+                "error"
+            );
+
+        } else {
+
+            showMessage(
+                "Data alumni berhasil dihapus.",
+                "success"
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        showMessage(
+            error.message ||
+            "Gagal menghapus data.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   DELAY
+============================================================ */
+
+function delay(
+    milliseconds
+) {
+
+    return new Promise(
+        function(resolve) {
+
+            setTimeout(
+                resolve,
+                milliseconds
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   MESSAGE
+============================================================ */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        "message " +
+        type;
+
+}
+
+
+function hideMessage() {
+
+    message.textContent =
+        "";
+
+
+    message.className =
+        "message";
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ============================================================
+   TUTUP MODAL KLIK LUAR
+============================================================ */
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "editModal"
+            );
+
+
+        if (
+            event.target === modal
+        ) {
+
+            closeEditModal();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   TUTUP MODAL DENGAN ESC
+============================================================ */
+
+window.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            const modal =
+                document.getElementById(
+                    "editModal"
+                );
+
+
+            if (
+                modal.style.display ===
+                "block"
+            ) {
+
+                closeEditModal();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   EXCEL EXPORT / TEMPLATE / IMPORT
+============================================================ */
+
+const EXCEL_HEADERS = [
+    "NIA", "Nama", "Tempat Lahir", "Tanggal Lahir", "Alamat",
+    "Nomor Telepon", "Jenis Kelamin", "Angkatan"
+];
+
+function getExcelRows(data) {
+    return data.map(function(alumni) {
+        return {
+            "NIA": alumni.nia || "",
+            "Nama": alumni.nama || "",
+            "Tempat Lahir": alumni.tempatLahir || "",
+            "Tanggal Lahir": alumni.tanggalLahir || "",
+            "Alamat": alumni.alamat || "",
+            "Nomor Telepon": alumni.telepon || "",
+            "Jenis Kelamin": alumni.jenisKelamin || "",
+            "Angkatan": alumni.angkatan || ""
+        };
+    });
+}
+
+function createWorkbook(rows) {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(rows, { header: EXCEL_HEADERS });
+    ws["!cols"] = [
+        {wch:18},{wch:28},{wch:20},{wch:18},{wch:45},{wch:20},{wch:18},{wch:12}
+    ];
+    XLSX.utils.book_append_sheet(wb, ws, "Alumni");
+    return wb;
+}
+
+function exportExcel() {
+    if (!alumniData.length) {
+        showMessage("Belum ada data alumni yang dapat diekspor.", "info");
+        return;
+    }
+    const dataToExport = filteredData.length !== alumniData.length ? filteredData : alumniData;
+    const wb = createWorkbook(getExcelRows(dataToExport));
+    const ws = wb.Sheets.Alumni;
+    for (let r = 2; r <= dataToExport.length + 1; r++) {
+        if (ws["A" + r]) ws["A" + r].t = "s";
+        if (ws["F" + r]) ws["F" + r].t = "s";
+    }
+    XLSX.writeFile(wb, "Data_Alumni_" + new Date().toISOString().slice(0,10) + ".xlsx");
+    showMessage(
+        dataToExport.length === alumniData.length
+            ? "Data alumni berhasil diekspor ke Excel."
+            : "Data hasil pencarian berhasil diekspor ke Excel.",
+        "success"
+    );
+}
+
+function downloadTemplate() {
+    const wb = createWorkbook([{
+        "NIA":"", "Nama":"", "Tempat Lahir":"", "Tanggal Lahir":"",
+        "Alamat":"", "Nomor Telepon":"", "Jenis Kelamin":"", "Angkatan":""
+    }]);
+    const ws = wb.Sheets.Alumni;
+    if (ws["A2"]) ws["A2"].t = "s";
+    if (ws["F2"]) ws["F2"].t = "s";
+
+    const petunjuk = XLSX.utils.aoa_to_sheet([
+        ["PETUNJUK IMPORT DATA ALUMNI"], [""], ["Kolom", "Keterangan"],
+        ["NIA", "Wajib diisi dan harus unik."],
+        ["Nama", "Wajib diisi."],
+        ["Tempat Lahir", "Tempat lahir alumni."],
+        ["Tanggal Lahir", "Contoh: 01/01/2000."],
+        ["Alamat", "Alamat lengkap alumni."],
+        ["Nomor Telepon", "Simpan sebagai teks agar 0 di depan tidak hilang."],
+        ["Jenis Kelamin", "LAKI-LAKI atau PEREMPUAN."],
+        ["Angkatan", "Tahun/angkatan alumni."]
+    ]);
+    petunjuk["!cols"] = [{wch:22},{wch:75}];
+    XLSX.utils.book_append_sheet(wb, petunjuk, "Petunjuk");
+    XLSX.writeFile(wb, "Template_Import_Alumni.xlsx");
+    showMessage("Template Excel berhasil dibuat. Isi sheet 'Alumni', lalu import kembali.", "success");
+}
+
+function handleExcelImport(event) {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = "";
+    if (!file) return;
+    if (typeof XLSX === "undefined") {
+        showMessage("Library Excel belum berhasil dimuat. Periksa koneksi internet.", "error");
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        try {
+            showMessage("Membaca file Excel...", "info");
+            const wb = XLSX.read(e.target.result, {type:"array", cellDates:false, raw:false});
+            const sheetName = wb.SheetNames.includes("Alumni") ? "Alumni" : wb.SheetNames[0];
+            const ws = wb.Sheets[sheetName];
+            if (!ws) throw new Error("Sheet Alumni tidak ditemukan.");
+            const rows = XLSX.utils.sheet_to_json(ws, {defval:"", raw:false});
+            if (!rows.length) throw new Error("File Excel tidak memiliki data.");
+
+            const records = [], errors = [], seen = new Set();
+            rows.forEach(function(row, i) {
+                const no = i + 2;
+                const record = {
+                    nia:String(row["NIA"]||"").trim(), nama:String(row["Nama"]||"").trim(),
+                    tempatLahir:String(row["Tempat Lahir"]||"").trim(), tanggalLahir:String(row["Tanggal Lahir"]||"").trim(),
+                    alamat:String(row["Alamat"]||"").trim(), telepon:String(row["Nomor Telepon"]||"").trim(),
+                    jenisKelamin:String(row["Jenis Kelamin"]||"").trim().toUpperCase(), angkatan:String(row["Angkatan"]||"").trim()
+                };
+                if (!Object.values(record).some(Boolean)) return;
+                if (!record.nia) { errors.push("Baris "+no+": NIA wajib diisi."); return; }
+                if (!record.nama) { errors.push("Baris "+no+": Nama wajib diisi."); return; }
+                const key = record.nia.toLowerCase();
+                if (seen.has(key)) { errors.push("Baris "+no+": NIA "+record.nia+" duplikat di dalam file."); return; }
+                seen.add(key); records.push(record);
+            });
+            if (!records.length) throw new Error(errors.length ? errors.join("\n") : "Tidak ada data valid yang dapat diimport.");
+
+            const lanjut = confirm(
+                "Ditemukan "+records.length+" data siap diimport.\n\n"+
+                (errors.length ? errors.length+" baris akan dilewati karena tidak valid.\n\n" : "")+
+                "NIA yang sudah ada di database akan dilewati.\n\nLanjutkan import?"
+            );
+            if (!lanjut) { showMessage("Import dibatalkan.", "info"); return; }
+
+            // Filter NIA yang sudah ada agar tidak dikirim ulang.
+            const existingNia = new Set(
+                alumniData.map(function(item) {
+                    return String(item.nia || "").trim().toLowerCase();
+                })
+            );
+
+            const newRecords = records.filter(function(item) {
+                return !existingNia.has(item.nia.toLowerCase());
+            });
+
+            const alreadyExists = records.length - newRecords.length;
+
+            if (!newRecords.length) {
+                showMessage(
+                    "Tidak ada data baru. Semua NIA dalam file sudah terdaftar.",
+                    "info"
+                );
+                return;
+            }
+
+            showMessage("Mengimport "+newRecords.length+" data. Mohon tunggu...", "info");
+            await postToApi({action:"import", records:newRecords});
+
+            // postToApi menggunakan iframe karena API Google Apps Script bersifat cross-origin.
+            // Reload beberapa saat kemudian untuk memastikan data sudah masuk Spreadsheet.
+            await delay(1500);
+            await loadData();
+
+            let pesan = "Import dikirim. Data baru: "+newRecords.length+".";
+            if (alreadyExists) pesan += " NIA yang sudah ada dilewati: "+alreadyExists+".";
+            if (errors.length) pesan += " Baris Excel tidak valid: "+errors.length+".";
+
+            showMessage(pesan, (errors.length || alreadyExists) ? "info" : "success");
+            if (errors.length) console.warn("Baris Excel tidak valid:", errors);
+        } catch (error) {
+            console.error(error);
+            showMessage(error.message || "Gagal membaca/import file Excel.", "error");
+        }
+    };
+    reader.onerror = function() { showMessage("File Excel gagal dibaca.", "error"); };
+    reader.readAsArrayBuffer(file);
+}
+
+/* ============================================================
+   LOAD AWAL
+============================================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        loadData();
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
